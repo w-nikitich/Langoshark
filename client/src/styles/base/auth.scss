@@ -1,0 +1,77 @@
+.auth__form, .register__form {
+    display: block;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    // display: flex;
+    // justify-content: center;
+}
+
+input, select, option, .languages__pick {
+    font-size: $font-size-24;
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    border: 1px solid;
+    border-radius: 20px;
+    // border-width: 1px;
+    border-color: $default-color;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.auth__sign--up, .auth__sign--in {
+    margin-top: 30px;
+    width: 50%!important;
+}
+
+.invalid, .valid {
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    display: flex;
+    justify-content:center;
+    // width: 50%;
+}
+
+.invalid {
+    right: 0;
+    top: 0;
+    height: auto;
+    position: relative;
+
+    &::after {
+        content:'';
+        position: absolute;
+        background-image: url('../../images/invalid.png');
+        background-size: 20px 20px;
+        background-repeat: no-repeat;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        right: -20px;
+        top: calc(50% - 10px);
+    }
+
+    &::before {
+        content: attr(beforeContent);
+        position: absolute;
+        top: calc(50% + 20px);
+        white-space: nowrap;
+    }
+}
+
+.not-exist {
+    display: none;
+    
+    &::after {
+        content: 'Невірно введений пароль або пошта';
+        color: #000;
+        font-size: $font-size-24;
+    }
+}

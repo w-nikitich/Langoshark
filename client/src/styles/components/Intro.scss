@@ -1,0 +1,53 @@
+@import '../themes/Dark-theme';
+@import '../constans.scss';
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.intro {
+  position: relative;
+  background: linear-gradient(302deg,#5df3fd,#0169b0,#1f003b);
+  background-size: 180% 180%;
+  animation: gradient-animation 15s ease infinite;
+  width: 100vw;
+  height: 95vh;
+    
+  &__wrapper {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 200px;
+    position: relative;
+  }
+
+
+  &__greet {
+    display: flex;
+    margin-top: 200px;
+    color: #ebfefe;
+    font-family: $default-font;
+    font-size: $font-size-24;
+    text-transform: uppercase;
+  }
+
+  &__icon {
+    width: 400px;
+    height: 400px;
+    // margin-top: 300px;
+      
+  }
+}
+
+@keyframes gradient-animation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+}

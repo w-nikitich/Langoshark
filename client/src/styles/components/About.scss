@@ -1,0 +1,45 @@
+@import '../constans.scss';
+
+.about {
+    margin-top: 40px;
+    font-family: $default-font;
+
+    &__wrapper {
+        width: 100%;
+    }
+
+    &__nani {
+        font-size: $font-size-36;
+    }
+
+    &__features__block {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__features {
+        display: flex;
+        flex-direction: column;
+        text-align: justify;
+        width: 350px;
+    }
+
+    &__features__q {
+        font-size: $font-size-36;
+        margin-top: 50px;
+    }
+
+    &__features__list {
+        font-size: $font-size-24;
+        margin-top: 30px;
+    }
+
+    &__features__list--item:not(:first-of-type) {
+        margin-top: 20px;
+    }
+
+    &__icon {
+        width: 500px;
+        height: 500px;
+    }
+}

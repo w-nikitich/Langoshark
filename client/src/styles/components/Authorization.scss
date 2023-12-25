@@ -1,0 +1,35 @@
+@import '../constans.scss';
+@import '../base/auth.scss';
+
+.auth {
+    font-family: $default-font;
+    background-color: #fff  ;
+    padding-top: 50px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    width: 30%; 
+
+    p {
+        color: #000;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: $font-size-24;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    &__wrapper {
+
+    }
+
+    &__sign--in, &__sign--up {
+        background-color: #d2f5ff;
+    }
+
+    .invalid, .valid {
+        width: 50%;
+    }
+}
