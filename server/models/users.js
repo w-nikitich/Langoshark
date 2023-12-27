@@ -1,13 +1,13 @@
 const client = require('../db/db').client;
 
-async function setUser(email, password) {
+async function setUser(email, password, username, language) {
     const users = client.db().collection('users');
     users.insertOne({
         email: email,
         password: password,
-        username: 'Username',
+        username: username,
         level: null,
-        language: null
+        language: language
     })
 }
 
@@ -24,4 +24,16 @@ async function getUser(email, password) {
     }
 }
 
-module.exports = {setUser, getUser}
+async function isUserExist(email) {
+    const users = client.db().collection('users');
+    const checkExisting = await users.findOne({email: email});
+
+    if (checkExisting !== null) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+module.exports = {setUser, getUser, isUserExist}

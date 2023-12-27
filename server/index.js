@@ -2,7 +2,7 @@ const start = require('./db/db').start;
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser')
-const userRouter =  require('./routes/userRouter');
+const {signInRouter, registerRouter} =  require('./routes/userRouter');
 const axios = require("axios").create({baseURL: "http://localhost:3001"});
 const app = express();
 
@@ -24,10 +24,13 @@ app.get('/', function(req, res) {
     console.log('123')
 })
 
-app.use('/sign-in', userRouter);
+// app.post('/register', (req, res) => {
+  
+// })
 
+app.use('/sign-in', signInRouter);
 
-
+app.use('/register', registerRouter)
 
 app.listen(3001, () => {
     console.log('yes')

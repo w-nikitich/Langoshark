@@ -19,6 +19,10 @@ class Registration extends React.Component {
         this.showLanguageList = this.showLanguageList.bind(this);
     }
 
+    handleSubmit(e) {
+        e.preventDefault(); 
+    }
+
     handleChange(e) {
         const value = e.target.value;
 
@@ -33,11 +37,12 @@ class Registration extends React.Component {
             const isValid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email);
 
             this.setState({emailValid: isValid});
+            console.log(email);
     
             if (!isValid && spanElem.classList.contains('invalid')) {
                spanElem.setAttribute('beforeContent', 'Невірно введена електронна пошта');
             }
-    
+            
             return isValid;
 
         } catch (e) {
@@ -81,15 +86,21 @@ class Registration extends React.Component {
         }
     }
 
-    register(nickname, email, password, languages) {
-
+    async register(nickname, email, password, languages) {
+        if (this.checkEmailValidity(email) === true && this.checkPasswordValidity(password) === true) {
+            const response = await axios.post('http://localhost:3001/register', {nickname, email, password, languages});
+            console.log(response);
+        }
+        else {
+            console.log('no')
+        }
     }
 
     render() {
         return(
             <div id="registration">
 
-                <form className="register__form">
+                <form className="register__form" onSubmit={this.handleSubmit}>
                     <p>Реєстрація</p>
                     
                     <input name="nickname" type="text" placeholder="Придумайте свій нікнейм" value={this.state.nickname} onChange={(e) => this.handleChange(e)}></input>
@@ -122,7 +133,7 @@ class Registration extends React.Component {
                         </div>
                     </div>
 
-                    <input className="register__submit" type="submit" value='Зареєструватися' onClick={(e) => {this.register(this.nickname, this.email,this.password, this.languages    )}}/>
+                    <input className="register__submit" type="submit" value='Зареєструватися' onClick={(e) => {this.register(this.state.nickname, this.state.email, this.state.password, this.state.languages)}}/>
                 </form>
             </div>
         );

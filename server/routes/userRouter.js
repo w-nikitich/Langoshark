@@ -1,9 +1,10 @@
 const express = require('express');
-const userRouter = express.Router();
+const signInRouter = express.Router();
+const registerRouter = express.Router();
 const users = require('../models/users');
 const { default: axios } = require('axios');
 
-userRouter.post('/', async (req, res) => {
+signInRouter.post('/', async (req, res) => {
     try {
         const checkExisting = await users.getUser(req.body.email, req.body.password);
         console.log(req.body.email + ', also getted ' + req.body.password);
@@ -12,7 +13,25 @@ userRouter.post('/', async (req, res) => {
     } catch(error) {
         console.error(error);
     }
+});
+
+registerRouter.post('/', async (req, res) => {
+    try {
+        const checkExisting = await users.isUserExist(req.body.email); 
+        
+        if (checkExisting) {
+            console.log('user exists');
+        }
+        else {
+            const newUser = await users.setUser(req.body.email, req.body.password, req.body.username, req.body.language);
+            console.log(req.body.email, req.body.username);
+        }
+    } catch (error) {
+        console.error(error);
+    }
 })
 
-module.exports = userRouter;
+
+
+module.exports = {signInRouter, registerRouter};
 

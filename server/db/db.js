@@ -1,7 +1,15 @@
 const {MongoClient, ServerApiVersion} = require('mongodb');
 const {config} = require('../config');
 
-const client = new MongoClient(`mongodb+srv://Kiko:${config.DB_PASSWORD}@cluster0.q63wqad.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp`, {
+// const client = new MongoClient(`mongodb+srv://Kiko:${config.DB_PASSWORD}@cluster0.q63wqad.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp`, {
+//     serverApi: {
+//         version: ServerApiVersion.v1,
+//         strict: true,
+//         deprecationErrors: true,
+//     }
+// });
+
+const client = new MongoClient(`mongodb+srv://Kiko:${config.DB_PASSWORD}@cluster0.q63wqad.mongodb.net/`, {
     serverApi: {
         version: ServerApiVersion.v1,
         strict: true,

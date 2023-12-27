@@ -61,9 +61,7 @@ class Authorization extends React.Component {
     }
 
     handleSubmit(event) {
-        event.preventDefault();
-        
-        
+        event.preventDefault(); 
     }
 
     async signIn(email, password) {

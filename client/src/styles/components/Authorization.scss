@@ -32,4 +32,15 @@
     .invalid, .valid {
         width: 50%;
     }
+
+    .not-exist {
+        display: none;
+        text-align: center;
+        
+        &::after {
+            content: 'Невірно введений пароль або пошта';
+            color: #000;
+            font-size: $font-size-24;
+        }
+    }
 }
