@@ -8,7 +8,7 @@ class Registration extends React.Component {
         this.english = React.createRef();
         this.japanese = React.createRef();
         this.state={
-            nickname: null,
+            username: null,
             email: null,
             password: null,
             languages:[],
@@ -71,12 +71,7 @@ class Registration extends React.Component {
     }
 
     showLanguageList(){
-        // const listOfLanguages = document.getElementsByClassName('languages__choice')[0];
-        // const element = this.languagesList.current;
-        // console.log(element)
         const listDisplayProperty = window.getComputedStyle(this.languagesList.current).getPropertyValue('display');
-
-        // console.log(listDisplayProperty)
 
         if (listDisplayProperty == 'block') {
             this.languagesList.current.style.display = 'none';
@@ -86,9 +81,10 @@ class Registration extends React.Component {
         }
     }
 
-    async register(nickname, email, password, languages) {
+    async register(username, email, password, languages) {
+
         if (this.checkEmailValidity(email) === true && this.checkPasswordValidity(password) === true) {
-            const response = await axios.post('http://localhost:3001/register', {nickname, email, password, languages});
+            const response = await axios.post('http://localhost:3001/register', {username, email, password, languages});
             console.log(response);
         }
         else {
@@ -103,7 +99,7 @@ class Registration extends React.Component {
                 <form className="register__form" onSubmit={this.handleSubmit}>
                     <p>Реєстрація</p>
                     
-                    <input name="nickname" type="text" placeholder="Придумайте свій нікнейм" value={this.state.nickname} onChange={(e) => this.handleChange(e)}></input>
+                    <input name="username" type="text" placeholder="Придумайте свій нікнейм" value={this.state.username} onChange={(e) => this.handleChange(e)}></input>
 
                     <span className={this.state.emailValid ? 'valid' : 'invalid'}>
                         <input name="email" type="text" placeholder="Уведіть Вашу електронну пошту" value={this.state.email} onChange={(e) => this.handleChange(e)} onBlur={() => this.checkEmailValidity(this.state.email)}/>
@@ -114,9 +110,6 @@ class Registration extends React.Component {
                     </span>
 
                     <div className="languages">
-                        {/* <select name="languages__select" onClick={this.showLanguageList}>
-                            <option value='default' selected disabled hidden>Оберіть мову, яку хочете вивчати</option>
-                        </select> */}
                         <div className="languages__pick" onClick={this.showLanguageList}>
                             <p>Оберіть мову, яку хочете вивчати</p>
                         </div>
@@ -133,7 +126,7 @@ class Registration extends React.Component {
                         </div>
                     </div>
 
-                    <input className="register__submit" type="submit" value='Зареєструватися' onClick={(e) => {this.register(this.state.nickname, this.state.email, this.state.password, this.state.languages)}}/>
+                    <input className="register__submit" type="submit" value='Зареєструватися' onClick={(e) => {this.register(this.state.username, this.state.email, this.state.password, this.state.languages)}}/>
                 </form>
             </div>
         );

@@ -24,10 +24,6 @@ app.get('/', function(req, res) {
     console.log('123')
 })
 
-// app.post('/register', (req, res) => {
-  
-// })
-
 app.use('/sign-in', signInRouter);
 
 app.use('/register', registerRouter)
