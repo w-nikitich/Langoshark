@@ -23,8 +23,8 @@ registerRouter.post('/', async (req, res) => {
             console.log('user exists');
         }
         else {
-            const newUser = await users.setUser(req.body.email, req.body.password, req.body.username, req.body.language);
-            console.log(req.body.email, req.body.username);
+            const newUser = await users.setUser(req.body.email, req.body.password, req.body.username, req.body.languages);
+            console.log(req.body.email, req.body.username, req.body.languages);
         }
     } catch (error) {
         console.error(error);

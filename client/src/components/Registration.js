@@ -7,11 +7,12 @@ class Registration extends React.Component {
         this.languagesList = React.createRef();
         this.english = React.createRef();
         this.japanese = React.createRef();
+        this.arrayOfLanguages = ['english:Англійська', 'japanese:Японська']
         this.state={
             username: null,
             email: null,
             password: null,
-            languages:[],
+            languages: [],
             emailValid: null,
             passwordValid: null
         }
@@ -37,7 +38,6 @@ class Registration extends React.Component {
             const isValid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email);
 
             this.setState({emailValid: isValid});
-            console.log(email);
     
             if (!isValid && spanElem.classList.contains('invalid')) {
                spanElem.setAttribute('beforeContent', 'Невірно введена електронна пошта');
@@ -70,6 +70,25 @@ class Registration extends React.Component {
         }
     }
 
+    checkLanguage(e) {
+        if (e.target.checked) {
+            this.setState((prevState) => ({
+                languages: [...prevState.languages, e.target.name]
+            }))
+
+        }
+        else {
+            console.log(this.state.languages.includes(e.target.name))
+            if (this.state.languages.includes(e.target.name)) {
+                const copyArr = [...this.state.languages];
+                copyArr.pop();
+                this.setState({languages: copyArr});
+            }
+        }
+
+        console.log(this.state.languages)
+    }
+
     showLanguageList(){
         const listDisplayProperty = window.getComputedStyle(this.languagesList.current).getPropertyValue('display');
 
@@ -85,7 +104,7 @@ class Registration extends React.Component {
 
         if (this.checkEmailValidity(email) === true && this.checkPasswordValidity(password) === true) {
             const response = await axios.post('http://localhost:3001/register', {username, email, password, languages});
-            console.log(response);
+            // console.log(this.english);
         }
         else {
             console.log('no')
@@ -115,14 +134,16 @@ class Registration extends React.Component {
                         </div>
 
                         <div className="languages__choice" ref={this.languagesList}>
-                            <div className="languages__choice--eng">
-                                <input type="checkbox" id="english" name="english" ref={this.english}/>
-                                <label for='english'>Англійська</label>                   
-                            </div>
-                            <div className="languages__choice--jap">
-                                <input type="checkbox" id="japanese" name="japanese" ref={this.japanese}/>
-                                <label for='japanese'>Японська</label>                   
-                            </div>
+                            {
+                                (this.arrayOfLanguages).map((value, index) => {
+                                    const languageTranslate = value.split(':');
+
+                                    return <div className={`languages__choice--${languageTranslate[0].substring(0, 3)}`}>
+                                                <input type="checkbox" id={languageTranslate[0]} name={languageTranslate[0]} ref={this[`${languageTranslate[0]}`]} onChange={(e) => this.checkLanguage(e)}/>
+                                                <label for={languageTranslate[0]}>{languageTranslate[1]}</label>                   
+                                            </div>
+                                })
+                            }
                         </div>
                     </div>
 
