@@ -1,120 +1,70 @@
-import React from "react";
+import React, {useRef} from "react";
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { observer } from 'mobx-react';
+import { Link, useNavigate } from "react-router-dom";
+import {checkEmailValidity, checkPasswordValidity} from '../utils/checkValidity';
+import Userdata from '../store/Userdata';
 
-class Authorization extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: '',
-            password: '',
-            emailValid: null,
-            passwordValid: null
-        }
-    }
+function Authorization()  {
+    const navigate = useNavigate();
+    const emailRef = useRef();
+    const passwordRef = useRef();
+    const notExistingUserRef = useRef();
 
-    checkEmailValidity(email) {
-        // /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
-        try {
-            const spanElem = document.getElementsByTagName('span')[1];
-            const isValid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email);
-
-            this.setState({emailValid: isValid});
-    
-            if (!isValid && spanElem.classList.contains('invalid')) {
-               spanElem.setAttribute('beforeContent', 'Невірно введена електронна пошта');
-            }
-    
-            return isValid;
-
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    checkPasswordValidity(password) {
-        try {
-            const spanElem = document.getElementsByTagName('span')[2];
-            const isValid = /^[\w-\.]{9,}$/g.test(password);
-
-            this.setState({passwordValid: isValid});
-    
-            if (!isValid && password.length < 9 && spanElem.classList.contains('invalid')) {
-                spanElem.setAttribute('beforeContent', 'Пароль має містити мінімум 9 символів')
-            }
-            else if (!isValid && password.length >= 9) {
-                spanElem.setAttribute('beforeContent', 'Пароль містить неприпустимі символи')
-            }
-    
-            return isValid;
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    handleChange(e) {
-        const value = e.target.value;
-
-        this.setState({ 
-            [e.target.name]: value
-        })
-    }
-
-    handleSubmit(event) {
+    function handleSubmit(event) {
         event.preventDefault(); 
     }
 
-    async signIn(email, password) {
-        const spanElem = document.getElementsByTagName('span')[0];
+    async function signIn(email, password) {
+        if (checkEmailValidity(email, emailRef.current) === true && checkPasswordValidity(password, passwordRef.current) === true) {
 
-        if (this.checkEmailValidity(email) === true && this.checkPasswordValidity(password) === true) {
+            await axios.post(`http://localhost:3001/sign-in/`, {email: email, password: password})
+                .then(async (res) => {
+                    await Userdata.fetchUserdata(); 
+                    navigate('/profile', {state: {username: res.data.username}})
+                })
+                .catch((err) => {notExistingUserRef.current.style.display = 'block';});
 
-            const response = await axios.post(`http://localhost:3001/sign-in/`, {email: email, password: password});
-            
-            console.log(response);
-
-            if (!response.data) {
-                spanElem.style.display = 'block';
-            }
-            else {
-                // Увійти
-            }  
+            // if (!response.data) {
+            //     spanElem.style.display = 'block';
+            // }
+            // else {
+            //     // Увійти
+            //     // if response data is getted, but the spanElem is block - spanElem must be 'display: none'
+            // }  
         }
         else {
             
         }
     }
 
-    async signUp() {
+    async function signUp() {
         
     }
 
-    render() {
-        return(
-            <div className="auth">
-                <div className="auth__wrapper">
-                    <p>Увійти або зареєструватися</p>
-                    <span className='not-exist'></span>
+    return(
+        <div className="auth">
+            <div className="auth__wrapper">
+                <p>Увійти або зареєструватися</p>
+                <span className='not-exist' ref={notExistingUserRef}></span>
 
-                    <form className="auth__form" onSubmit={this.handleSubmit}>       
-                        <span className={this.state.emailValid ? 'valid' : 'invalid'}>
-                        <input name='email' type="text" placeholder="Уведіть Вашу електронну пошту" value={this.state.email} onChange={(e) => this.handleChange(e)} onBlur={() => this.checkEmailValidity(this.state.email)}/>
-                        </span>
-                    
-                        <span className={this.state.passwordValid ? 'valid' : 'invalid'}>
-                        <input name="password" type="password" placeholder="Уведіть Ваш пароль" onChange={(e) => this.handleChange(e)} onBlur={() => this.checkPasswordValidity(this.state.password)}/>
-                        </span>
+                <form className="auth__form" onSubmit={handleSubmit}>       
+                    <span className={Userdata.isEmailValid ? 'valid' : 'invalid'} ref={emailRef}>
+                        <input name='email' type="text" placeholder="Уведіть Вашу електронну пошту" value={Userdata.email} onChange={(e) => Userdata.setEmail(e.target.value)} onBlur={() => checkEmailValidity(Userdata.email, emailRef.current)}/>
+                    </span>
+                
+                    <span className={Userdata.isPasswordValid ? 'valid' : 'invalid'} ref={passwordRef}>
+                        <input name="password" type="password" placeholder="Уведіть Ваш пароль" onChange={(e) => Userdata.setPassword(e.target.value)} onBlur={() => checkPasswordValidity(Userdata.password, passwordRef.current)}/>
+                    </span>
 
-                        <input className="auth__sign--in" type="submit" onClick={(e) => {this.signIn(this.state.email, this.state.password)}} value='Увійти'/>
-                        <Link to='/registration'>
-                            <input className='auth__sign--up' type="submit" formaction='http://localhost:3001/sign-up' value='Зареєструватися'/>
-                        </Link>
-                    </form>
-                </div>
+                    <input className="auth__sign--in" type="submit" onClick={(e) => {signIn(Userdata.email, Userdata.password)}} value='Увійти'/>
+                    <Link to='/registration'>
+                        <input className='auth__sign--up' type="submit" formaction='http://localhost:3001/sign-up' value='Зареєструватися'/>
+                    </Link>
+                </form>
             </div>
-        );
-    }
-
+        </div>
+    );
 }
 
-export default Authorization;
+export default observer(Authorization);

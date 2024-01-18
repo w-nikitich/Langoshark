@@ -1,8 +1,9 @@
 const start = require('./db/db').start;
 const express = require('express');
+const session = require('express-session');
 const cors = require('cors');
 const bodyParser = require('body-parser')
-const {signInRouter, registerRouter} =  require('./routes/userRouter');
+const {signInRouter, registerRouter, userdataRouter} =  require('./routes/userRouter');
 const axios = require("axios").create({baseURL: "http://localhost:3001"});
 const app = express();
 
@@ -18,6 +19,12 @@ app.use(
       extended: true,
     }),
   );
+app.use(session({
+  secret: 'sharks must live',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}))
 
 app.get('/', function(req, res) {
     // start();
@@ -25,8 +32,8 @@ app.get('/', function(req, res) {
 })
 
 app.use('/sign-in', signInRouter);
-
-app.use('/register', registerRouter)
+app.use('/register', registerRouter);
+app.use('/userdata', userdataRouter)
 
 app.listen(3001, () => {
     console.log('yes')

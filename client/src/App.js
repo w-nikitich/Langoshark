@@ -6,15 +6,16 @@ import Intro from './components/Intro';
 import Header from './components/Header';
 import About from './components/About';
 import Home from "./pages/Home";
-import Registration from "./components/Registration";
+import ObserverWithRouterRegistration from "./components/Registration";
+import Profile from "./components/Profile";
 
 function App() {
   return (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home/>}/>
-          <Route path="/registration" element={<Registration/>}/>
-
+          <Route path="/registration" element={<ObserverWithRouterRegistration/>}/>
+          <Route path="/profile" element={<Profile/>}/>
         </Routes>
       </BrowserRouter>
 

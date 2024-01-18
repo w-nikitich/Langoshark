@@ -1,4 +1,5 @@
 @import '../constans.scss';
+@import './SignOut.scss';
 
 .top {
     position: relative;
@@ -110,4 +111,12 @@
     // svg {
     //     position: absolute;
     // }
+}
+
+header {
+    display: flex;
+    align-items: center;
+    background-color: $default-color;
+    height: 30%;
+    justify-content: space-between;
 }

@@ -1,158 +1,113 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import { useNavigate} from 'react-router-dom';
 import axios from 'axios'; 
+import { observer } from 'mobx-react';
+import { arrayOfLanguages, levelsOfLanguages } from "../config";
+import Userdata from '../store/Userdata';
+import {checkEmailValidity, checkPasswordValidity} from '../utils/checkValidity';
 
-class Registration extends React.Component {
-    constructor(props) {
-        super(props);
-        this.languagesList = React.createRef();
-        this.english = React.createRef();
-        this.japanese = React.createRef();
-        this.arrayOfLanguages = ['english:Англійська', 'japanese:Японська']
-        this.state={
-            username: null,
-            email: null,
-            password: null,
-            languages: [],
-            emailValid: null,
-            passwordValid: null
-        }
+function Registration() {
+    const navigate = useNavigate();
+    const languagesList = useRef(null);
+    const englishRef = useRef(null);
+    const japaneseRef = useRef(null);
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
+    const existingUserRef = useRef(null);
 
-        this.showLanguageList = this.showLanguageList.bind(this);
-    }
-
-    handleSubmit(e) {
+    function handleSubmit(e) {
         e.preventDefault(); 
     }
 
-    handleChange(e) {
-        const value = e.target.value;
+    function checkLanguage(e) {
+        const newLanguage = e.target.name;
 
-        this.setState({ 
-            [e.target.name]: value
-        })
-    }
-
-    checkEmailValidity(email) {
-        try {
-            const spanElem = document.getElementsByTagName('span')[0];
-            const isValid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email);
-
-            this.setState({emailValid: isValid});
-    
-            if (!isValid && spanElem.classList.contains('invalid')) {
-               spanElem.setAttribute('beforeContent', 'Невірно введена електронна пошта');
-            }
-            
-            return isValid;
-
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    checkPasswordValidity(password) {
-        try {
-            const spanElem = document.getElementsByTagName('span')[1];
-            const isValid = /^[\w-\.]{9,}$/g.test(password);
-
-            this.setState({passwordValid: isValid});
-    
-            if (!isValid && password.length < 9 && spanElem.classList.contains('invalid')) {
-                spanElem.setAttribute('beforeContent', 'Пароль має містити мінімум 9 символів')
-            }
-            else if (!isValid && password.length >= 9) {
-                spanElem.setAttribute('beforeContent', 'Пароль містить неприпустимі символи')
-            }
-    
-            return isValid;
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    checkLanguage(e) {
         if (e.target.checked) {
-            this.setState((prevState) => ({
-                languages: [...prevState.languages, e.target.name]
-            }))
-
+            Userdata.setLanguage(newLanguage);
         }
         else {
-            console.log(this.state.languages.includes(e.target.name))
-            if (this.state.languages.includes(e.target.name)) {
-                const copyArr = [...this.state.languages];
-                copyArr.pop();
-                this.setState({languages: copyArr});
+            if (Userdata.languages.includes(newLanguage)) {
+                Userdata.removeLanguage(newLanguage)
             }
         }
 
-        console.log(this.state.languages)
+        console.log(Userdata.languages);
     }
-
-    showLanguageList(){
-        const listDisplayProperty = window.getComputedStyle(this.languagesList.current).getPropertyValue('display');
+    
+    function showLanguageList() {
+        const listDisplayProperty = window.getComputedStyle(languagesList.current).getPropertyValue('display');
 
         if (listDisplayProperty == 'block') {
-            this.languagesList.current.style.display = 'none';
+            languagesList.current.style.display = 'none';
         }
         else {
-            this.languagesList.current.style.display = 'block';
+            languagesList.current.style.display = 'block';
         }
     }
 
-    async register(username, email, password, languages) {
+    async function register(username, email, password, languages) {
 
-        if (this.checkEmailValidity(email) === true && this.checkPasswordValidity(password) === true) {
-            const response = await axios.post('http://localhost:3001/register', {username, email, password, languages});
-            // console.log(this.english);
+        if (checkEmailValidity(email, emailRef.current) === true && checkPasswordValidity(password, passwordRef.current) === true) {
+            (Userdata.languages).map((value, index) => {
+                Userdata.setLevel(levelsOfLanguages[value][0])
+            });
+
+            const level = Userdata.level;
+            // Userdata.setLevel('A1');
+            await axios.post('http://localhost:3001/register', {username, email, password, level, languages})
+                .then((res) =>  {navigate('/profile')})
+                .catch((err) => {existingUserRef.current.style.display = 'block'});
         }
         else {
             console.log('no')
         }
     }
 
-    render() {
-        return(
-            <div id="registration">
+    return(
+        <div id="registration">
 
-                <form className="register__form" onSubmit={this.handleSubmit}>
-                    <p>Реєстрація</p>
-                    
-                    <input name="username" type="text" placeholder="Придумайте свій нікнейм" value={this.state.username} onChange={(e) => this.handleChange(e)}></input>
+            <form className="register__form" onSubmit={handleSubmit}>
+                <p>Реєстрація</p>
 
-                    <span className={this.state.emailValid ? 'valid' : 'invalid'}>
-                        <input name="email" type="text" placeholder="Уведіть Вашу електронну пошту" value={this.state.email} onChange={(e) => this.handleChange(e)} onBlur={() => this.checkEmailValidity(this.state.email)}/>
-                    </span>
+                <span className="user--exist" ref={existingUserRef}>Користувач з такою поштою вже існує</span>
+            {/* <input name="username" type="text" placeholder="Придумайте свій нікнейм" value={this.state.username} onChange={(e) => this.handleChange(e)}></input> */}
+                <input name="username" type="text" placeholder="Придумайте свій нікнейм" value={Userdata.username} onChange={(e) => Userdata.setUsername(e.target.value)}></input>
 
-                    <span className={this.state.passwordValid ? 'valid' : 'invalid'}>
-                        <input name="password" type="password" placeholder="Уведіть Ваш пароль" onChange={(e) => this.handleChange(e)} onBlur={() => this.checkPasswordValidity(this.state.password)}/>
-                    </span>
+                <span className={Userdata.isEmailValid ? 'valid' : 'invalid'} ref={emailRef}>
+                    {/* <input name="email" type="text" placeholder="Уведіть Вашу електронну пошту" value={this.state.email} onChange={(e) => this.handleChange(e)} onBlur={() => this.checkEmailValidity(this.state.email)}/> */}
+                    <input name="email" type="text" placeholder="Уведіть Вашу електронну пошту" value={Userdata.email} onChange={(e) => Userdata.setEmail(e.target.value)} onBlur={() => checkEmailValidity(Userdata.email, emailRef.current)}/>
+                </span>
 
-                    <div className="languages">
-                        <div className="languages__pick" onClick={this.showLanguageList}>
-                            <p>Оберіть мову, яку хочете вивчати</p>
-                        </div>
+                <span className={Userdata.isPasswordValid ? 'valid' : 'invalid'} ref={passwordRef}>
+                    {/* <input name="password" type="password" placeholder="Уведіть Ваш пароль" onChange={(e) => this.handleChange(e)} onBlur={() => this.checkPasswordValidity(this.state.password)}/> */}
+                    <input name="password" type="password" placeholder="Уведіть Ваш пароль" onChange={(e) => Userdata.setPassword(e.target.value)} onBlur={() => checkPasswordValidity(Userdata.password, passwordRef.current)}/>
+                </span>
 
-                        <div className="languages__choice" ref={this.languagesList}>
-                            {
-                                (this.arrayOfLanguages).map((value, index) => {
-                                    const languageTranslate = value.split(':');
-
-                                    return <div className={`languages__choice--${languageTranslate[0].substring(0, 3)}`}>
-                                                <input type="checkbox" id={languageTranslate[0]} name={languageTranslate[0]} ref={this[`${languageTranslate[0]}`]} onChange={(e) => this.checkLanguage(e)}/>
-                                                <label for={languageTranslate[0]}>{languageTranslate[1]}</label>                   
-                                            </div>
-                                })
-                            }
-                        </div>
+                <div className="languages">
+                    <div className="languages__pick" onClick={showLanguageList}>
+                        <p>Оберіть мову, яку хочете вивчати</p>
                     </div>
 
-                    <input className="register__submit" type="submit" value='Зареєструватися' onClick={(e) => {this.register(this.state.username, this.state.email, this.state.password, this.state.languages)}}/>
-                </form>
-            </div>
-        );
-    }
-    
+                    <div className="languages__choice" ref={languagesList}>
+                        {
+                            (arrayOfLanguages).map((value, index) => {
+                                const languageTranslate = value.split(':');
+
+                                return <div className={`languages__choice--${languageTranslate[0].substring(0, 3)}`}>
+                                            <input type="checkbox" id={languageTranslate[0]} name={languageTranslate[0]} ref={languageTranslate[0] === 'english' ? englishRef : japaneseRef} onChange={(e) => checkLanguage(e)}/>
+                                            <label for={languageTranslate[0]}>{languageTranslate[1]}</label>                   
+                                        </div>
+                            })
+                        }
+                    </div>
+                </div>
+
+            {/* <input className="register__submit" type="submit" value='Зареєструватися' onClick={(e) => {this.register(this.state.username, this.state.email, this.state.password, this.state.languages)}}/> */}
+                <input className="register__submit" type="submit" value='Зареєструватися' onClick={(e) => {register(Userdata.username, Userdata.email, Userdata.password, Userdata.languages)}}/>
+            </form>
+        </div>
+    )
 }
 
-export default Registration;
+// const ObserverWithRouterRegistration = observer(Registration);
+export default observer(Registration);;

@@ -11,17 +11,12 @@ async function setUser(email, password, username, languages) {
     })
 }
 
+// not getUser, but check user data validity
 async function getUser(email, password) {
     const users = client.db().collection('users');
-    const checkExisting = await users.findOne({email: email, password: password})
-    console.log(checkExisting);
-
-    if (checkExisting !== null) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    const userData = await users.findOne({email: email, password: password})
+    // console.log(checkExisting);
+    return userData;
 }
 
 async function isUserExist(email) {

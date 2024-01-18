@@ -8,11 +8,20 @@
 
     form {
         width: 30%;
+        position: relative;
     }
 
     p {
         margin-bottom: 100px;
         font-size: $font-size-36;
+    }
+
+    .user--exist {
+        display: none;
+        position: absolute;
+        left: 12%;
+        top: 50px;
+        font-size: $font-size-24;
     }
 
     .languages__pick {
