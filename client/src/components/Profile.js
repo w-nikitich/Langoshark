@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios'; 
 import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 import { arrayOfLanguages } from "../config";
 import Userdata from "../store/Userdata";
 import Header from "./Header";
 import Container from "react-bootstrap/esm/Container";
+import plus_icon from '../images/plus_icon.png';
 
 function Profile() {
-    console.log();
+
+
     return(
         <div id="profile">
             <Header/>
@@ -30,32 +33,36 @@ function Profile() {
                             <div className="profile__languages">
                                 <ul className="profile__languages__list">
                                     <p>Вивчаю:</p>
-
-                                    {(arrayOfLanguages).map((value, index) => {
+                                   
+                                    {arrayOfLanguages.map((value) => {
                                         const languageTranslate = value.split(':');
                                         const languageNameEN = languageTranslate[0];
                                         const languageNameUA = languageTranslate[1];
                                         let myLanguages = null;
                                         let myLanguageLevel = null;
-                                        // let levelObjData = Object.getOwnPropertyDescriptor(Userdata.level, languageNameEN);
-                                        
+
                                         if (Userdata.languages.includes(languageNameEN)) {
                                             myLanguages = languageNameUA; 
                                             
-                                            // if (Userdata.level.hasOwnProperty(languageNameEN)) {
-                                            //     myLanguageLevel = Userdata.level.
-                                            // }
 
-                                            // console.log(levelObjData.value);
-                                            myLanguageLevel = Userdata.level[languageNameEN];
-                                            console.log(myLanguageLevel);
+                                            if (Userdata.level.hasOwnProperty(languageNameEN)) {
+                                                myLanguageLevel = toJS(Userdata.level[languageNameEN])
+                                            }
+
+
+                                            // // console.log(levelObjData.value);
+                                            // myLanguageLevel = Userdata.level[languageNameEN];
+                                            console.log(toJS(Userdata.level));
+                                            
+                                        }
+                                        else {
+                                            // console.log(Userdata.languages);
                                         }
 
                                         return(
                                             <li key={languageNameEN} className="profile__languages__item">
                                                 <p>{myLanguages}</p>
-                                                
-                                                {/* <p>{Userdata.level}</p> */}
+                                                {/* <p>{myLanguageLevel}</p> */}
                                             </li>
                                         );
                                     })}
@@ -64,9 +71,17 @@ function Profile() {
 
                             <div className="profile__dictionaries">
                                 <ul className="profile__dictionaries__list">
+                                    <div className="profile__dictionaries__">
+
+                                    </div>
                                     <p>Мої словники:</p>
 
+                                    <button className="profile__dictionaries__add">
+                                        <img src={plus_icon}/>
+                                    </button>
                                     {/* <li></li> */}
+
+
                                 </ul>
                             </div>
                         </div>

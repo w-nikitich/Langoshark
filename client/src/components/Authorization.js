@@ -17,13 +17,22 @@ function Authorization()  {
 
     async function signIn(email, password) {
         if (checkEmailValidity(email, emailRef.current) === true && checkPasswordValidity(password, passwordRef.current) === true) {
+            try {
+                await axios.post(`http://localhost:3001/sign-in/`, {email: email, password: password});
+                await Userdata.fetchUserdata(); 
+                navigate('/profile')
+            } catch (err) {
+                notExistingUserRef.current.style.display = 'block';
+            }
 
-            await axios.post(`http://localhost:3001/sign-in/`, {email: email, password: password})
-                .then(async (res) => {
-                    await Userdata.fetchUserdata(); 
-                    navigate('/profile', {state: {username: res.data.username}})
-                })
-                .catch((err) => {notExistingUserRef.current.style.display = 'block';});
+
+            // await axios.post(`http://localhost:3001/sign-in/`, {email: email, password: password})
+            //     .then(async (res) => {
+            //         await Userdata.fetchUserdata(); 
+            //         navigate('/profile')
+            //         // , {state: {username: res.data.username}}
+            //     })
+            //     .catch((err) => {notExistingUserRef.current.style.display = 'block';});
 
             // if (!response.data) {
             //     spanElem.style.display = 'block';
@@ -36,10 +45,6 @@ function Authorization()  {
         else {
             
         }
-    }
-
-    async function signUp() {
-        
     }
 
     return(

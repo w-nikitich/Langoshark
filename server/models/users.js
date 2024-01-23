@@ -1,12 +1,12 @@
 const client = require('../db/db').client;
 
-async function setUser(email, password, username, languages) {
+async function setUser(email, password, username, level, languages) {
     const users = client.db().collection('users');
     users.insertOne({
         email: email,
         password: password,
         username: username,
-        level: null,
+        level: level,
         languages: languages
     })
 }

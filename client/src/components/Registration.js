@@ -48,12 +48,14 @@ function Registration() {
     async function register(username, email, password, languages) {
 
         if (checkEmailValidity(email, emailRef.current) === true && checkPasswordValidity(password, passwordRef.current) === true) {
-            (Userdata.languages).map((value, index) => {
-                Userdata.setLevel(levelsOfLanguages[value][0])
-            });
+
+
+            Userdata.languages.forEach((element) => {
+                Userdata.setLevel(levelsOfLanguages[element][0])
+            })
 
             const level = Userdata.level;
-            // Userdata.setLevel('A1');
+
             await axios.post('http://localhost:3001/register', {username, email, password, level, languages})
                 .then((res) =>  {navigate('/profile')})
                 .catch((err) => {existingUserRef.current.style.display = 'block'});

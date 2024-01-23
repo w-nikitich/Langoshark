@@ -1,12 +1,14 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import SignOut from './SignOut';
+import Menu from './Menu';
 
 function Header() {
     // sign out
     return(
         <header>
             <Container>
+                <Menu/>
                 <SignOut/>
             </Container>
         </header>

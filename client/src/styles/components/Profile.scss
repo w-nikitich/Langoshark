@@ -1,6 +1,12 @@
 @import '../constans.scss';
 
 #profile {
+    font-family: $default-font;
+
+    button {
+        border: none;
+        border-radius: 5px;
+    }
 
     .profile__avatar {
         width: 15vw;
@@ -23,7 +29,7 @@
 
     .profile__username {
         font-size: $font-size-36;
-        margin-left: 30vw;
+        margin-left: 20vw;
     }
 
     .profile__learning__info {
@@ -44,6 +50,23 @@
                 margin-top: 20px;
             }
         }
+    }
+
+    .profile__dictionaries {
+        display: flex;
+        
+        &__add {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 30px;
+    
+            img {
+                width: 20px; 
+            }
+        }
+
     }
 
 }

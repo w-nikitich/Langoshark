@@ -25,13 +25,23 @@ class Userdata {
     }
 
     async fetchUserdata() {
-        const response = await axios.post('http://localhost:3001/userdata/', {email: this.email, password: this.password});
-        this.setUsername(response.data.username);
+        try {
+            const response = await axios.post('http://localhost:3001/userdata/', {email: this.email, password: this.password});
+            this.setUsername(response.data.username);
 
-        (response.data.languages).map((value, index) => {
-            this.setLanguage(value);
-        })
-        this.setLevel(response.data.level);
+            response.data.languages.forEach((element) => {
+                this.setLanguage(element);
+                this.setLevel(response.data.level);
+            })
+    
+            // response.data.languages.forEach((element) => {
+            //     this.setLevel(element, response.data.level);
+            //     // this.setLevel(response.data.languages, response.data.level);
+            // })
+        } catch (err) {
+            console.log(err);
+        }
+
     }
 
     setUsername(username) {
@@ -70,6 +80,7 @@ class Userdata {
         (this.languages).map((value, index) => {
             this.level = {... this.level, [value]: level}
         })
+        // this.level = {...this.level, [language]: level}
     }
 }
 
