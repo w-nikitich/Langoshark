@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import { arrayOfLanguages, levelsOfLanguages } from "../config";
 import Userdata from '../store/Userdata';
 import {checkEmailValidity, checkPasswordValidity} from '../utils/checkValidity';
+import { toJS } from "mobx";
 
 function Registration() {
     const navigate = useNavigate();
@@ -48,12 +49,7 @@ function Registration() {
     async function register(username, email, password, languages) {
 
         if (checkEmailValidity(email, emailRef.current) === true && checkPasswordValidity(password, passwordRef.current) === true) {
-
-
-            Userdata.languages.forEach((element) => {
-                Userdata.setLevel(levelsOfLanguages[element][0])
-            })
-
+            Userdata.setLevel();
             const level = Userdata.level;
 
             await axios.post('http://localhost:3001/register', {username, email, password, level, languages})

@@ -1,4 +1,5 @@
 import {makeAutoObservable, action} from 'mobx';
+import {levelsOfLanguages} from '../config';
 import axios from 'axios';
 import empty_avatar from '../images/empty_avatar.jpg';
 
@@ -76,11 +77,10 @@ class Userdata {
         this.avatar = avatar_path;
     }
 
-    setLevel(level) {
-        (this.languages).map((value, index) => {
-            this.level = {... this.level, [value]: level}
+    setLevel() {
+        this.languages.forEach((element) => {
+            this.level = {... this.level, [element]: levelsOfLanguages[element][0]}
         })
-        // this.level = {...this.level, [language]: level}
     }
 }
 
