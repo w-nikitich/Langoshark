@@ -7,6 +7,7 @@ import Userdata from "../store/Userdata";
 import Header from "./Header";
 import Container from "react-bootstrap/esm/Container";
 import plus_icon from '../images/plus_icon.png';
+import settings_icon from '../images/settings_icon.png';
 
 function Profile() {
 
@@ -16,9 +17,13 @@ function Profile() {
             <Header/>
             <Container>
                 <div className="profile__basic__info">
-                    <div className="profile__basic__info--avatar">
+                    <div className="profile__basic__info__avatar">
                         <img className="profile__avatar" src={Userdata.avatar}/>
-
+                        <label className="profile__avatar__change">
+                            <input className="profile__avatar__change file__input" type="file" accept=".png, .jpg, .jpeg, .gif"/>
+                            <img className="profile__avatar__chang icon" src={settings_icon}/>
+                        </label>                
+                        
                         {/* change avatar icon */}
                     </div>
 
@@ -61,8 +66,8 @@ function Profile() {
 
                                         return(
                                             <li key={languageNameEN} className="profile__languages__item">
-                                                <p>{myLanguages}</p>
-                                                {/* <p>{myLanguageLevel}</p> */}
+                                                <p className="profile__languages__text">{myLanguages}</p>
+                                                <p className="profile__languages__level">{myLanguageLevel}</p>
                                             </li>
                                         );
                                     })}
@@ -71,14 +76,13 @@ function Profile() {
 
                             <div className="profile__dictionaries">
                                 <ul className="profile__dictionaries__list">
-                                    <div className="profile__dictionaries__">
+                                    <div className="profile__dictionaries__top">
+                                        <p className="profile__dictionaries__text">Мої словники:</p>
 
+                                        <button className="profile__dictionaries__add">
+                                            <img src={plus_icon}/>
+                                        </button>
                                     </div>
-                                    <p>Мої словники:</p>
-
-                                    <button className="profile__dictionaries__add">
-                                        <img src={plus_icon}/>
-                                    </button>
                                     {/* <li></li> */}
 
 
