@@ -2,6 +2,7 @@ import React, {useRef} from "react";
 import axios from 'axios';
 import { observer } from 'mobx-react';
 import { Link, useNavigate } from "react-router-dom";
+import {useCookies} from 'react-cookie';
 import {checkEmailValidity, checkPasswordValidity} from '../utils/checkValidity';
 import Userdata from '../store/Userdata';
 
@@ -10,6 +11,9 @@ function Authorization()  {
     const emailRef = useRef();
     const passwordRef = useRef();
     const notExistingUserRef = useRef();
+    // const [cookies, setCookie, removeCookie] = useCookies(['logged-in']);
+
+    axios.defaults.withCredentials = true;
 
     function handleSubmit(event) {
         event.preventDefault(); 
@@ -18,8 +22,9 @@ function Authorization()  {
     async function signIn(email, password) {
         if (checkEmailValidity(email, emailRef.current) === true && checkPasswordValidity(password, passwordRef.current) === true) {
             try {
-                await axios.post(`http://localhost:3001/sign-in/`, {email: email, password: password});
-                await Userdata.fetchUserdata(); 
+                const userdata = await axios.post(`http://localhost:3001/sign-in/`, {email: email, password: password});
+                await Userdata.fetchUserdata(userdata); 
+                // setCookie('logged-in', '')
                 navigate('/profile')
             } catch (err) {
                 notExistingUserRef.current.style.display = 'block';

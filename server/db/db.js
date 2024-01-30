@@ -23,6 +23,7 @@ async function start() {
         await client.db(`${config.DB_NAME}`).command({ ping: 1 });
         const database = await client.db();
         const documentInfo = await database.collection('users').findOne({});
+        // database.collection('users').deleteMany({});
         // const checkUsersCollection = database.collection('users').find().toArray().then((value) => {
         //     console.log(value.length);
         // });

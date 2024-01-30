@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios'; 
 import { observer } from 'mobx-react';
+import { useNavigate } from "react-router-dom";
 import { toJS } from 'mobx';
 import { arrayOfLanguages } from "../config";
 import Userdata from "../store/Userdata";
@@ -8,9 +9,26 @@ import Header from "./Header";
 import Container from "react-bootstrap/esm/Container";
 import plus_icon from '../images/plus_icon.png';
 import settings_icon from '../images/settings_icon.png';
+import NewDictionary from "./NewDictionary";
 
 function Profile() {
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        axios.get('http://localhost:3001/profile/', { withCredentials: true})
+            .then(res => {
+                Userdata.fetchUserdata(res.data);
+                console.log('all right');
+            })
+            .catch((error) => { 
+                console.log(error)
+                navigate('/');
+            })
+    }, [])
+
+    function handleClick(e) {
+        
+    }
 
     return(
         <div id="profile">
@@ -79,7 +97,7 @@ function Profile() {
                                     <div className="profile__dictionaries__top">
                                         <p className="profile__dictionaries__text">Мої словники:</p>
 
-                                        <button className="profile__dictionaries__add">
+                                        <button className="profile__dictionaries__add" onClick={(e) => {handleClick(e)}}>
                                             <img src={plus_icon}/>
                                         </button>
                                     </div>

@@ -21,18 +21,19 @@ class Userdata {
             setLanguage: action,
             removeLanguage: action,
             setLevel: action,   
-            fetchUserdata: action
+            fetchUserdata: action,
+            reset: action
         });
     }
 
-    async fetchUserdata() {
+    async fetchUserdata(userdata) {
         try {
-            const response = await axios.post('http://localhost:3001/userdata/', {email: this.email, password: this.password});
-            this.setUsername(response.data.username);
+            // const response = await axios.post('http://localhost:3001/userdata/', {id: userdata});
+            this.setUsername(userdata.username);
 
-            response.data.languages.forEach((element) => {
+            userdata.languages.forEach((element) => {
                 this.setLanguage(element);
-                this.setLevel(response.data.level);
+                this.setLevel();
             })
     
             // response.data.languages.forEach((element) => {
@@ -81,6 +82,17 @@ class Userdata {
         this.languages.forEach((element) => {
             this.level = {... this.level, [element]: levelsOfLanguages[element][0]}
         })
+    }
+
+    reset() {
+        this.username = null;
+        this.email = null;
+        this.password = null;
+        this.languages = [];
+        this.level = {};
+        this.isEmailValid = false;
+        this.isPasswordValid = false;
+        this.avatar = empty_avatar;
     }
 }
 

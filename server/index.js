@@ -3,16 +3,19 @@ const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
 const bodyParser = require('body-parser')
-const {signInRouter, registerRouter, userdataRouter} =  require('./routes/userRouter');
+const cookieParser = require('cookie-parser');
+const {signInRouter, profileRouter, registerRouter, userdataRouter, signOutRouter} =  require('./routes/userRouter');
 const axios = require("axios").create({baseURL: "http://localhost:3001"});
 const app = express();
 
 const corsOptions = {
-    origin: 'http://localhost:3001/',
+    origin: 'http://localhost:3000',
+    credentials: true,
     optionsSuccessStatus: 200
 }
 
-app.use(cors());
+app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(bodyParser.json(corsOptions));
 app.use(
     bodyParser.urlencoded({
@@ -33,7 +36,9 @@ app.get('/', function(req, res) {
 
 app.use('/sign-in', signInRouter);
 app.use('/register', registerRouter);
-app.use('/userdata', userdataRouter)
+app.use('/userdata', userdataRouter);
+app.use('/profile', profileRouter);
+app.use('/sign-out', signOutRouter);
 
 app.listen(3001, () => {
     console.log('yes')

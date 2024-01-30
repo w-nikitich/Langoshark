@@ -8,6 +8,7 @@ import About from './components/About';
 import Home from "./pages/Home";
 import ObserverWithRouterRegistration from "./components/Registration";
 import Profile from "./components/Profile";
+import Authorization from "./components/Authorization";
 
 function App() {
   return (
