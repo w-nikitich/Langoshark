@@ -21,7 +21,7 @@
         position: absolute;
         left: 12%;
         top: 50px;
-        font-size: $font-size-24;
+        font-size: $font-size-1-5;
     }
 
     .languages__pick {
@@ -32,7 +32,7 @@
 
         p {
             margin: 0;
-            font-size: $font-size-24;
+            font-size: $font-size-1-5;
         }
 
         &::before {
@@ -113,7 +113,7 @@
             align-items: center;
             margin: 0;
             text-align: left;
-            font-size: $font-size-24;
+            font-size: $font-size-1-5;
             text-align: center;
             cursor: pointer;
         }

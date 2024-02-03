@@ -57,7 +57,7 @@ registerRouter.post('/', async (req, res) => {
             res.cookie("token", token, {secure: true, httpOnly: true, sameSite: 'Strict'});
             res.cookie("user_id", userdata._id, {secure: true, httpOnly: true, sameSite: 'Strict'});
             res.send(userdata);
-        }   
+        }           
     } catch (error) {
         console.error(error);
     }
