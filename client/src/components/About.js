@@ -16,11 +16,31 @@ class About extends React.Component {
                             <div className="about__features">
                                 <p className="about__features__q">Які можливості надає сайт?</p>
                                 <ul className="about__features__list">
-                                    <li className="about__features__list--item">Створювати власні словники</li>
-                                    <li className="about__features__list--item">Бачити перелік слів/кандзі для відповідного рівня</li>
-                                    <li className="about__features__list--item">Імпортувати/експортувати файли зі словами та додавати їх у словники</li>
-                                    <li className="about__features__list--item">Проходити тести</li>
-                                    <li className="about__features__list--item">Отримувати нагороди та похвалу/похлаву від акули</li>
+                                    <li className="about__features__list--item">
+                                        <p className="about__features__list--item--text">
+                                            Створювати власні словники
+                                        </p>
+                                    </li>
+                                    <li className="about__features__list--item">
+                                        <p className="about__features__list--item--text">
+                                            Бачити перелік слів/кандзі для відповідного рівня
+                                        </p>
+                                    </li>
+                                    <li className="about__features__list--item">
+                                        <p className="about__features__list--item--text">
+                                            Імпортувати/експортувати файли зі словами та додавати їх у словники
+                                        </p>
+                                    </li>
+                                    <li className="about__features__list--item">
+                                        <p className="about__features__list--item--text">
+                                            Проходити тести
+                                        </p>
+                                    </li>
+                                    <li className="about__features__list--item">
+                                        <p className="about__features__list--item--text">
+                                            Отримувати нагороди та похвалу/похлаву від акулиОтримувати нагороди та похвалу/похлаву від акули
+                                        </p>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

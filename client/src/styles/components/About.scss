@@ -6,6 +6,8 @@
 
     &__wrapper {
         width: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     &__nani {
@@ -34,12 +36,54 @@
         margin-top: 30px;
     }
 
+    &__features__list--item {
+        position: relative;
+
+        &--text {
+            margin-left: 30px;
+        }
+    }
+
     &__features__list--item:not(:first-of-type) {
         margin-top: 20px;
+    }
+
+    &__features__list--item::before {
+        content: '';
+        background:  url('../../images/bubble.png');
+        background-size: 20px;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 20%;
     }
 
     &__icon {
         width: 500px;
         height: 500px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .about__wrapper {
+        align-items: center;
+    }
+
+    .about__nani {
+
+    }
+
+    .about__features__q {
+        font-size: $font-size-36;
+        font-weight: 600;
+    }
+
+    .about__features {
+        width: auto;
+    }
+
+
+    .about__features__list--item {
+        font-size: 24px;
     }
 }

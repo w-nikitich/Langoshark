@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios'; 
 import Intro from "../components/Intro";
 import About from "../components/About";
+import BubbleAnimation from "../components/BubbleAnimation";
 
 
 function Home() {
@@ -22,6 +23,7 @@ function Home() {
 
     return(
         <div id="home">
+            <BubbleAnimation/>
             <Intro/>
             <About/>
         </div>
