@@ -10,9 +10,11 @@ import Container from "react-bootstrap/esm/Container";
 import plus_icon from '../images/plus_icon.png';
 import settings_icon from '../images/settings_icon.png';
 import NewDictionary from "./NewDictionary";
+import DictionaryList from "./DictionaryList";
 
 function Profile() {
     const navigate = useNavigate();
+    const [isShown, setIsShown] = useState(false);
 
     useEffect(() => {
         axios.get('http://localhost:3001/profile/', { withCredentials: true})
@@ -26,12 +28,15 @@ function Profile() {
             })
     }, [])
 
-    function handleClick(e) {
-        
+    function handleState(isShown) {
+        setIsShown(isShown);
     }
 
     return(
         <div id="profile">
+{        isShown ?
+            <NewDictionary isShown={handleState}/> :
+            null}
             <Header/>
             <Container>
                 <div className="profile__basic__info">
@@ -44,7 +49,6 @@ function Profile() {
                         
                         {/* change avatar icon */}
                     </div>
-
                     <div className="profile__basic__info--userdata">
                         <p className="profile__username">{Userdata.username}</p>
                         {/* znachok time */}
@@ -97,10 +101,15 @@ function Profile() {
                                     <div className="profile__dictionaries__top">
                                         <p className="profile__dictionaries__text">Мої словники:</p>
 
-                                        <button className="profile__dictionaries__add" onClick={(e) => {handleClick(e)}}>
+                                        <button className="profile__dictionaries__add" onClick={() => {handleState(true)}}>
                                             <img src={plus_icon}/>
                                         </button>
                                     </div>
+                                    
+
+                                    <DictionaryList />
+
+                                    
                                     {/* <li></li> */}
 
 

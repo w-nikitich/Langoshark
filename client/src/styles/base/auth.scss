@@ -1,3 +1,5 @@
+@import '../constans.scss';
+
 .auth__form, .register__form {
     display: block;
     text-align: center;
@@ -44,6 +46,8 @@ input, select, option, .languages__pick {
     top: 0;
     height: auto;
     position: relative;
+    color: #000;
+    font-size: 16px;
 
     &::after {
         content:'';

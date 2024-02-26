@@ -28,18 +28,12 @@ class Userdata {
 
     async fetchUserdata(userdata) {
         try {
-            // const response = await axios.post('http://localhost:3001/userdata/', {id: userdata});
             this.setUsername(userdata.username);
 
             userdata.languages.forEach((element) => {
                 this.setLanguage(element);
                 this.setLevel();
             })
-    
-            // response.data.languages.forEach((element) => {
-            //     this.setLevel(element, response.data.level);
-            //     // this.setLevel(response.data.languages, response.data.level);
-            // })
         } catch (err) {
             console.log(err);
         }

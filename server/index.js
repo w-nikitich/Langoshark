@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const {signInRouter, profileRouter, registerRouter, userdataRouter, signOutRouter} =  require('./routes/userRouter');
+const {newDictionaryRouter, getDictionariesRouter} = require('./routes/dictionaryRouter');
 const axios = require("axios").create({baseURL: "http://localhost:3001"});
 const app = express();
 
@@ -39,6 +40,8 @@ app.use('/register', registerRouter);
 app.use('/userdata', userdataRouter);
 app.use('/profile', profileRouter);
 app.use('/sign-out', signOutRouter);
+app.use('/new-dictionary', newDictionaryRouter);
+app.use('/dictionaries', getDictionariesRouter);
 
 app.listen(3001, () => {
     console.log('yes')

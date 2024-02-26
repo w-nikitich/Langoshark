@@ -12,3 +12,32 @@ li, ul {
 a {
     text-decoration: none;
 }
+
+.close {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 25px;
+        left: 10px;
+        transform: rotate(-45deg);
+        background-color: $default-color;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 25px;
+        left: 10px;
+        transform: rotate(45deg);
+        background-color: $default-color;
+    }
+}

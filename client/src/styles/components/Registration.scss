@@ -67,6 +67,10 @@
     
     .languages {
         position: relative;
+
+        input, select, option {
+            height: 40px;
+        }
     }
 
     .languages__choice {
@@ -91,7 +95,6 @@
 
     input, select, option, .languages__pick{
         width: 100%;
-        height: 40px;
     }
 
     .languages__choice--eng, .languages__choice--jap {
