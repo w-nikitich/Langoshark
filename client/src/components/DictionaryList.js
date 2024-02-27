@@ -18,18 +18,7 @@ function DictionaryList() {
                 }))
 
                 UserDictionariesData.setDictionary(newDictionary);
-                // dictionaries.forEach((element, index) => {
-                //     const newDictionary = {
-                //         name: element.name,
-                //         languages: element.language,
-                //         amount: element.amount
-                //     }
-                //     UserDictionariesData.setDictionary(newDictionary);
-                    
-                // });
                 console.log(toJS(UserDictionariesData.dictionaries))
-
-            // UserDictionariesData.setDictionary(res)
             })
             .catch(eror => {
                 console.error(eror)
@@ -41,8 +30,9 @@ function DictionaryList() {
             {
                 UserDictionariesData.dictionaries.map((element) => {
                     return(
-                        <div>
-                            <p>{element.name}</p>
+                        <div className="dictionary__list__item">
+                            <p className="dictionary__list__name">{element.name}</p>
+                            <p className="dictionary__list__amount">{element.amount}</p>
                         </div>
                     );
                 })
