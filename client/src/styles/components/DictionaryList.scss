@@ -4,7 +4,7 @@
     font-size: $font-size-1-5;
     font-weight: 400;
     display: grid;
-    grid-template-columns: 10vw 10vw;
+    grid-template-columns: 15vw 15vw;
     margin-top: 20px;
 }
 
@@ -12,6 +12,7 @@
     display: flex;
     justify-content: space-between;
     padding: 0 10px 0 10px;
+    white-space: initial;
     margin-right: 20px;
     margin-bottom: 20px;
     border: 1px solid $border-color;
@@ -31,4 +32,10 @@
         -webkit-font-smoothing: subpixel-antialiased;
         transform: scale(1.05);
     }
+}
+
+.dictionary__list__name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }

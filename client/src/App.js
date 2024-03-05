@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import ObserverWithRouterRegistration from "./components/Registration";
 import Profile from "./components/Profile";
 import Authorization from "./components/Authorization";
+import Dictionaries from "./pages/Dictionaries";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Home/>}/>
           <Route path="/registration" element={<ObserverWithRouterRegistration/>}/>
           <Route path="/profile" element={<Profile/>}/>
+          <Route path="/dictionaries" element={<Dictionaries/>}/>
         </Routes>
       </BrowserRouter>
 

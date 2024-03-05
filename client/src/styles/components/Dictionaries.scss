@@ -1,0 +1,31 @@
+@import '../constans.scss';
+@import '../base/base.scss';
+
+#dictionaries {
+    position: relative;
+}
+
+.dictionaries__block {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-family: $default-font;
+}
+
+.dictionaries__proposed__list {
+
+}
+
+.dictionaries__list__pannel {
+    
+}
+
+.dictionaries__list__pannel__form {
+    display: flex;
+}
+
+.shark__dialog {
+    position: absolute;
+    left: 0;
+    height: 15vw;
+}
