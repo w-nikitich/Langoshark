@@ -1,34 +1,36 @@
-import ReactDOM from "react-dom/client";
+import React, { useEffect, useState } from "react";
+import axios from 'axios'; 
+import { observer } from 'mobx-react';
+import { useNavigate } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import logo from './logo.svg';
 import './styles/App.scss'
-import Intro from './components/Intro';
-import Header from './components/Header';
-import About from './components/About';
 import Home from "./pages/Home";
 import ObserverWithRouterRegistration from "./components/Registration";
 import Profile from "./components/Profile";
-import Authorization from "./components/Authorization";
 import Dictionaries from "./pages/Dictionaries";
+import Userdata from "./store/Userdata";
 
 function App() {
-  return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/registration" element={<ObserverWithRouterRegistration/>}/>
-          <Route path="/profile" element={<Profile/>}/>
-          <Route path="/dictionaries" element={<Dictionaries/>}/>
-        </Routes>
-      </BrowserRouter>
+  useEffect(() => {
+    axios.get('http://localhost:3001/profile/', { withCredentials: true})
+    .then(res => {
+        Userdata.fetchUserdata(res.data);
+        console.log(Userdata.username);
+    })
+    .catch((error) => { 
+        console.log(error)
+    })
+  }, [])
 
-    // <div className="App">
-    //   {/* if there is no info in cache - up, otherwise - out*/}
-    //   {/* <Header ending='up' auth='Почати'/> */}
-    //   {/* <img src={logo} className="App-logo" alt="logo" /> */}
-    //   <Intro/>
-    //   <About/>
-    // </div>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="/registration" element={<ObserverWithRouterRegistration/>}/>
+        <Route path="/profile" element={<Profile store={Userdata}/>}/>
+        <Route path="/dictionaries" element={<Dictionaries store={Userdata}/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

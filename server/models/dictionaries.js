@@ -1,13 +1,14 @@
 const client = require('../db/db').client;
 const { ObjectId } = require('mongodb');
 
-async function setDictionary(userId, language, name, amount) {
+async function setDictionary(userId, language, name, amount, level) {
     const dictionaries = client.db().collection('dictionaries');
     await dictionaries.insertOne({
         userId: userId,
         language: language,
         name: name,
-        amount: amount
+        amount: amount,
+        level: level
     });
 
     const newDictionary = await dictionaries.findOne({
@@ -17,9 +18,9 @@ async function setDictionary(userId, language, name, amount) {
     });
 
     return newDictionary;
-    
 }
 
+// nameOfDictionary ----> dictionaryId
 async function setWord(nameOfDictionary, word, wordTranslation, knowledge) {
     const dictionary = client.db().collection(nameOfDictionary);
 
@@ -36,4 +37,11 @@ async function getDictionaries(userId) {
     return userDictionaries;
 }
 
-module.exports = {setDictionary, setWord, getDictionaries}
+async function getProposalDictionaries(adminId, language, level) {
+    const dictionaries = client.db().collection('dictionaries');
+    const userDictionaries = await dictionaries.find({userId: adminId, language: language, level: level}).toArray();
+    console.log(language, level)
+    return userDictionaries;
+}
+
+module.exports = {setDictionary, setWord, getDictionaries, getProposalDictionaries}

@@ -12,15 +12,14 @@ import settings_icon from '../images/settings_icon.png';
 import NewDictionary from "./NewDictionary";
 import DictionaryList from "./DictionaryList";
 
-function Profile() {
+function Profile({store}) {
     const navigate = useNavigate();
     const [isShown, setIsShown] = useState(false);
 
     useEffect(() => {
         axios.get('http://localhost:3001/profile/', { withCredentials: true})
             .then(res => {
-                Userdata.fetchUserdata(res.data);
-                console.log('all right');
+                store.fetchUserdata(res.data);
             })
             .catch((error) => { 
                 console.log(error)
@@ -34,14 +33,12 @@ function Profile() {
 
     return(
         <div id="profile">
-{        isShown ?
-            <NewDictionary isShown={handleState}/> :
-            null}
+            { isShown ? <NewDictionary isShown={handleState}/> : null }
             <Header/>
             <Container>
                 <div className="profile__basic__info">
                     <div className="profile__basic__info__avatar">
-                        <img className="profile__avatar" src={Userdata.avatar}/>
+                        <img className="profile__avatar" src={store.avatar}/>
                         <label className="profile__avatar__change">
                             <input className="profile__avatar__change file__input" type="file" accept=".png, .jpg, .jpeg, .gif"/>
                             <img className="profile__avatar__chang icon" src={settings_icon}/>
@@ -50,7 +47,7 @@ function Profile() {
                         {/* change avatar icon */}
                     </div>
                     <div className="profile__basic__info--userdata">
-                        <p className="profile__username">{Userdata.username}</p>
+                        <p className="profile__username">{store.username}</p>
                         {/* znachok time */}
                         <div className="profile__achievements">
 
@@ -68,22 +65,19 @@ function Profile() {
                                         let myLanguages = null;
                                         let myLanguageLevel = null;
 
-                                        if (Userdata.languages.includes(languageNameEN)) {
+                                        if (store.languages.includes(languageNameEN)) {
                                             myLanguages = languageNameUA; 
                                             
 
-                                            if (Userdata.level.hasOwnProperty(languageNameEN)) {
-                                                myLanguageLevel = toJS(Userdata.level[languageNameEN])
+                                            if (store.level.hasOwnProperty(languageNameEN)) {
+                                                myLanguageLevel = toJS(store.level[languageNameEN])
                                             }
 
-
-                                            // // console.log(levelObjData.value);
-                                            // myLanguageLevel = Userdata.level[languageNameEN];
-                                            console.log(toJS(Userdata.level));
+                                            console.log(toJS(store.level));
                                             
                                         }
                                         else {
-                                            // console.log(Userdata.languages);
+
                                         }
 
                                         return(
@@ -108,11 +102,6 @@ function Profile() {
                                     
 
                                     <DictionaryList />
-
-                                    
-                                    {/* <li></li> */}
-
-
                                 </ul>
                             </div>
                         </div>

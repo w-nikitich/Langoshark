@@ -11,7 +11,6 @@ function Authorization()  {
     const emailRef = useRef();
     const passwordRef = useRef();
     const notExistingUserRef = useRef();
-    // const [cookies, setCookie, removeCookie] = useCookies(['logged-in']);
 
     axios.defaults.withCredentials = true;
 
@@ -24,28 +23,10 @@ function Authorization()  {
             try {
                 const userdata = await axios.post(`http://localhost:3001/sign-in/`, {email: email, password: password});
                 await Userdata.fetchUserdata(userdata); 
-                // setCookie('logged-in', '')
                 navigate('/profile')
             } catch (err) {
                 notExistingUserRef.current.style.display = 'block';
-            }
-
-
-            // await axios.post(`http://localhost:3001/sign-in/`, {email: email, password: password})
-            //     .then(async (res) => {
-            //         await Userdata.fetchUserdata(); 
-            //         navigate('/profile')
-            //         // , {state: {username: res.data.username}}
-            //     })
-            //     .catch((err) => {notExistingUserRef.current.style.display = 'block';});
-
-            // if (!response.data) {
-            //     spanElem.style.display = 'block';
-            // }
-            // else {
-            //     // Увійти
-            //     // if response data is getted, but the spanElem is block - spanElem must be 'display: none'
-            // }  
+            } 
         }
         else {
             

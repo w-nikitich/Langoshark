@@ -1,14 +1,6 @@
 const {MongoClient, ServerApiVersion} = require('mongodb');
 const {config} = require('../config');
 
-// const client = new MongoClient(`mongodb+srv://Kiko:${config.DB_PASSWORD}@cluster0.q63wqad.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp`, {
-//     serverApi: {
-//         version: ServerApiVersion.v1,
-//         strict: true,
-//         deprecationErrors: true,
-//     }
-// });
-
 const client = new MongoClient(`mongodb+srv://Kiko:${config.DB_PASSWORD}@cluster0.q63wqad.mongodb.net/`, {
     serverApi: {
         version: ServerApiVersion.v1,
@@ -23,27 +15,28 @@ async function start() {
         await client.db(`${config.DB_NAME}`).command({ ping: 1 });
         const database = await client.db();
         const documentInfo = await database.collection('users').findOne({});
-        // database.collection('users').deleteMany({});
-        // const checkUsersCollection = database.collection('users').find().toArray().then((value) => {
-        //     console.log(value.length);
-        // });
         
         if (!documentInfo) {
-            console.log('exist');
+            database.createCollection('users');
+            database.createCollection('dictionaries');
+            const users = client.db().collection('users');
+            users.insertOne({
+                email: 'elderlywitchy@gmail.com',
+                password: 'adminshark',
+                username: 'LangoShark',
+                level: {
+                    english: 'C1',
+                    japanese: 'N1'
+                },
+                languages: [
+                    'english',
+                    'japanese'
+                ]
+            })
         }
         else {
-            console.log(documentInfo)
-            database.createCollection('users');
+            console.log('exist')
         }
-
-        // if (checkUsersCollection.length > 0) {
-        //     console.log('exist');
-        // }
-        // else {
-        //     await client.db().createCollection('users');
-        // }
-        
-        console.log('Є пробиття');
     } catch (error) {
         console.error(error);
     }

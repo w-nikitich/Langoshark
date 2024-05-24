@@ -10,6 +10,16 @@ async function setUser(email, password, username, level, languages) {
         level: level,
         languages: languages
     })
+
+    const userdata = await users.findOne({
+        email: email,
+        password: password,
+        username: username,
+        level: level,
+        languages: languages
+    });
+
+    return userdata;
 }
 
 // not getUser, but check user data validity

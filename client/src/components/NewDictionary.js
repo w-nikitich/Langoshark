@@ -4,6 +4,7 @@ import axios from 'axios';
 import {arrayOfLanguages} from "../config";
 import UserDictionariesData from "../store/UserDictionariesData";
 import { toJS } from "mobx";
+import Userdata from "../store/Userdata";
 
 function NewDictionary(props) {
     const newDictionaryBlock = useRef();
@@ -38,7 +39,7 @@ function NewDictionary(props) {
     }
 
     function createNewDictionary() {
-        axios.post('http://localhost:3001/new-dictionary/', {languages: languages, name: name}, { withCredentials: true})
+        axios.post('http://localhost:3001/new-dictionary/', {languages: languages, name: name, level: Userdata.level[languages]}, { withCredentials: true})
             .then(res => {          
                 const dictionary = res.data;
 

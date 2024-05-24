@@ -7,7 +7,6 @@ import UserDictionariesData from "../store/UserDictionariesData";
 function DictionaryList() {
 
     useEffect(() => {
-        // UserDictionariesData.reset()
         axios.get('http://localhost:3001/dictionaries/', {withCredentials: true})
             .then(res => {
                 const dictionaries = res.data;

@@ -23,8 +23,6 @@ signInRouter.post('/', async (req, res) => {
         else {
             res.sendStatus(409);
         }
-        console.log(req.body.email + ', also getted ' + req.body.password);
-
     } catch(error) {
         console.error(error);
     }
@@ -49,14 +47,13 @@ registerRouter.post('/', async (req, res) => {
         }
         else {
             const newUser = await users.setUser(req.body.email, req.body.password, req.body.username, req.body.level, req.body.languages);
-            const userdata = await users.getUser({email: req.body.email, password: req.body.password});
             const token = jwt.sign({email: req.body.email}, "jwt-secret-key", {expiresIn: "1d"});
 
             console.log(req.body.email, req.body.username, req.body.languages);
 
             res.cookie("token", token, {secure: true, httpOnly: true, sameSite: 'Strict'});
-            res.cookie("user_id", userdata._id, {secure: true, httpOnly: true, sameSite: 'Strict'});
-            res.send(userdata);
+            res.cookie("user_id", newUser._id, {secure: true, httpOnly: true, sameSite: 'Strict'});
+            res.send(newUser);
         }           
     } catch (error) {
         console.error(error);

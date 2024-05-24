@@ -1,6 +1,6 @@
 import {makeAutoObservable, action} from 'mobx';
+import axios from 'axios'; 
 import {levelsOfLanguages} from '../config';
-import axios from 'axios';
 import empty_avatar from '../images/empty_avatar.jpg';
 
 class Userdata {
@@ -20,24 +20,44 @@ class Userdata {
             setPassword: action,
             setLanguage: action,
             removeLanguage: action,
-            setLevel: action,   
+            setDefLevel: action,   
+            setLevel: action,  
             fetchUserdata: action,
             reset: action
         });
     }
 
+    // async fetchUserdata(userdata) {
+    //     try {
+    //         this.setUsername(userdata.username);
+
+    //         userdata.languages.forEach((element) => {
+    //             this.setLanguage(element);
+    //             if (Object.keys(userdata.level).length === 0) {
+    //                 this.setDefLevel();
+    //             }
+    //             else {
+    //                 this.setLevel(element, userdata.level[element])
+    //             }
+    //         })
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+
+    // }
+
     async fetchUserdata(userdata) {
-        try {
-            this.setUsername(userdata.username);
+        this.setUsername(userdata.username);
 
-            userdata.languages.forEach((element) => {
-                this.setLanguage(element);
-                this.setLevel();
-            })
-        } catch (err) {
-            console.log(err);
-        }
-
+        userdata.languages.forEach((element) => {
+            this.setLanguage(element);
+            if (Object.keys(userdata.level).length === 0) {
+                this.setDefLevel();
+            }
+            else {
+                this.setLevel(element, userdata.level[element])
+            }
+        })
     }
 
     setUsername(username) {
@@ -72,10 +92,14 @@ class Userdata {
         this.avatar = avatar_path;
     }
 
-    setLevel() {
+    setDefLevel() {
         this.languages.forEach((element) => {
             this.level = {... this.level, [element]: levelsOfLanguages[element][0]}
         })
+    }
+
+    setLevel(language, level) {
+        this.level = {... this.level, [language]: level}
     }
 
     reset() {
